@@ -1,0 +1,57 @@
+一、默认的规则
+1、模块名以test_开头或者以_test结尾
+2、测试类以Test开头，并且不能有__init__方法
+3、测试方法必须以test开头
+
+二、测试用例运行方式
+1、主函数模式
+（1）运行所有：pytest.main()
+（2）指定模块：pytest.main(['-vs', 'test_login.py'])
+（3）指定目录：pytest.main(['-vs', './interface_testcase'])
+（4）通过nodeid的方式：
+	pytest.main(['-vs', './interface_testcase/test_interface.py::test_04_func'])
+	pytest.main(['-vs', './interface_testcase/test_interface.py::TestZhiliao::test_03_zhiliao'])
+2、命令行模式
+（1）运行所有：pytest
+（2）指定模块：pytest -vs test_login.py
+（3）指定目录：pytest -vs ./interface_testcase
+（4）通过nodeid的方式：
+	pytest -vs ./interface_testcase/test_interface.py::test_04_func
+	pytest -vs ./interface_testcase/test_interface.py::TestZhiliao::test_03_zhiliao
+	
+3、通过读取pytest.ini配置文件运行
+pytest.ini这个文件是pytest单元测试框架的核心配置文件
+1、位置：位于项目根目录
+2、编码：必须是ANSI，可以使用notpad++修改编码格式
+3、作用：修改pytest默认的行为
+4、运行的规则：不管是主函数的模式还是命令行运行，都会读取这个配置文件
+
+参数详解：
+-s：表示输出调试信息，包括print打印信息
+-v: 显示更详细的调试信息
+-n: 支持多线程或者分布式运行测试用例
+--reruns NUM：失败用例重跑
+
+-x：表示只要有一个用例报错，测试停止
+--maxfail=2：出现两个用例失败就停止。
+-k：根据测试用例的部分字符串去指定测试用例
+
+--html ./report/report.html		生成报告
+
+
+三、测试用例的执行顺序是什么样的？
+默认：从上到下
+加上标记改变执行顺序：@pytest.mark.run(order=2)
+
+
+四、如何分组执行（冒烟，分模块执行，分接口，web执行）
+smoke：冒烟用例，发布在各个模块里面
+pytest -vs -m "smoke or username"
+
+
+五、pytest跳过测试用例
+（1）无条件跳过
+@pytest.mark.skip(reason="微微太漂亮了")
+
+（2）有条件跳过
+@pytest.mark.skipif(age>=18, reason="已成年")   
